@@ -6,7 +6,7 @@ library(RCurl)
 
 # get data
 url <- getURL("https://raw.githubusercontent.com/orb16/seminaRs/master/weta.ttest2.csv")
-weta.edge <- read.csv(text= url, header = T)
+weta.edge <- read.csv(text= url, header = TRUE) #slightly different way of reading a csv, necessary for web data.  
 
 # run the ttest. See we put "paired = TRUE" as the default is unpaired
 weta.ttest<- t.test(weta~distance, data = weta.edge, paired = TRUE)
