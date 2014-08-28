@@ -1,0 +1,101 @@
+---
+title: "R seminar signups"
+author: "Olivia Burge"
+date: "28 August 2014"
+output: 
+   beamer_presentation:
+     theme: "Madrid"
+     colortheme: "seagull"
+---
+ 
+## Number of sign ups 
+```{r, echo= FALSE, message=FALSE, warning=FALSE}
+library(ggplot2, quietly = TRUE)
+library(RCurl, quietly = TRUE)
+library(dplyr, quietly = TRUE)
+library(tidyr, quietly = TRUE)
+url <- getURL("https://docs.google.com/spreadsheets/d/1-uIUKMTMPn18QliDQpp8hrTzo8jWE2mOfpwB6DcGf40/export?format=csv&id", ssl.verifypeer = FALSE)
+sem_res <- read.csv(text= url, header = TRUE) #slightly different way of reading a csv, necessary for web data. 
+#sem_res <- read.table(file = "/Users/Liv/Dropbox/R seminars/responses_2014-08-28.csv", header = T, check.names = FALSE, sep = ",")
+
+names(sem_res) <- c("timestamp", "name", "email", "affiliation", "R_familiarity", "sem1_canty", "sem1_lincoln",
+                    "sem2_canty", "sem2_lincoln",
+                    "sem3_canty", "sem3_lincoln",
+                    "sem4_canty", "sem4_lincoln",
+                    "sem5_canty", "sem5_lincoln",
+                    "sem6_canty", "sem6_lincoln",
+                    "sem7_canty", "transport_1",
+                    "transport_2",
+                    "transport_3",
+                    "transport_4",
+                    "transport_5",
+                    "transport_6",
+                    "transport_7")
+sem_res_attendance <- gather(sem_res[2:18], key = "session", value = "attending", sem1_canty:sem7_canty)
+sem_res_attendance$location <- ifelse(grepl(as.character(sem_res_attendance$session), pattern = "canty", fixed = TRUE), "Canterbury", "Lincoln")
+sem_res_attendance$week <- as.numeric(gsub(pattern = c("sem|_canty|_lincoln"), replacement = "", x = as.character(sem_res_attendance$session)))
+sem_res_attendance$week2 <- sem_res_attendance$week
+sem_res_attendance$week2 <- paste("Session", sem_res_attendance$week)
+sem_res_attendance$week <- as.character(sem_res_attendance$week)
+sem_res_attendance$attending <- as.factor(sem_res_attendance$attending)
+ggplot(subset(sem_res_attendance, sem_res_attendance$attending %in% c("I will rearrange my life to come", "Keen to come, but I'll see")), aes(x = week, alpha = attending)) + 
+  geom_histogram() +
+  facet_wrap(~location) +
+  labs(x = "Session")+
+  theme_bw()+
+  theme(legend.position = c(1,1), legend.justification = c(1,1),
+        legend.background = element_rect(colour = "gray"))+
+  scale_alpha_manual("Attending", values = c(0.9, 0.3), breaks = c("I will rearrange my life to come", "Keen to come, but I'll see"), labels = c("for sure", "probably"))
+
+```
+
+## Affiliation
+
+```{r, echo = FALSE}
+ggplot(subset(sem_res_attendance, sem_res_attendance$attending %in% c("I will rearrange my life to come", "Keen to come, but I'll see") & sem_res_attendance$affiliation %in% c("Lincoln University", "University of Canterbury")), aes(x = week, fill = affiliation)) + 
+  geom_histogram() +
+  facet_wrap(~location) +
+  labs(x = "Session")+
+  scale_fill_manual("Affiliation", values = c("forestgreen", "maroon"),
+                    labels = c("Lincoln", "Canterbury"))+
+  theme_bw()+
+    theme(legend.position = c(1,1), legend.justification = c(1,1),
+        legend.background = element_rect(colour = "gray"))
+```
+
+## Skillz
+
+```{r, echo = FALSE}
+cols <- c("#ffffcc", "#a1dab4", "#41b6c4", "#225ea8", "orange")
+sem_res_attendance$R_familiarity <- factor(sem_res_attendance$R_familiarity, exclude = NULL)
+ggplot(subset(sem_res_attendance, sem_res_attendance$attending %in% c("I will rearrange my life to come", "Keen to come, but I'll see") & sem_res_attendance$affiliation %in% c("Lincoln University", "University of Canterbury")), aes(x = week)) + 
+  geom_histogram(aes(fill = R_familiarity)) +
+  facet_wrap(~location) +
+  labs(x = "Session")+
+  scale_fill_manual("R familiarity", values = cols, labels = c("Never used","Familiar","Skilled","Expert","NA"))+
+  theme_bw()+
+    theme(legend.position = c(1,1), legend.justification = c(1,1),
+        legend.background = element_rect(colour = "gray"))
+```
+
+
+## Transport required
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrr}
+  \hline
+ & None & Monday  & Tuesday \\ 
+  \hline
+Seminar 1 &  72 &   3 &   2 \\ 
+  Seminar 2 &  74 &   2 &   1 \\ 
+  Seminar 3 &  74 &   3 &   0 \\ 
+  Seminar 4 &  75 &   2 &   0 \\ 
+  Seminar 5 &  71 &   5 &   1 \\ 
+  Seminar 6 &  74 &   3 &   0 \\ 
+  Seminar 7 &  69 &   8 &   0 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
