@@ -84,21 +84,21 @@ Time to do some plotting.  We either set up the plot first as an object, or whac
 * surround the object in brackets; or 
 * add a line of code after creating the object with the name of the object.
 
-```{r, fig.margin = TRUE, fig.cap = "Brachy abundance by water content", cache = TRUE}
+```{r, fig.margin = TRUE, fig.cap = "Brachy abundance by water content", cache = FALSE}
 miteplot1 <- ggplot(data = mite_all, aes(y = Brachy, x = WatrCont))
 miteplot1 + 
   geom_point()
 ```
 
 For this figure we wrap the lines in brackets to make it print automatically: 
-```{r, fig.margin = TRUE, fig.cap = "Substrate density against water content",cache = TRUE}
+```{r, fig.margin = TRUE, fig.cap = "Substrate density against water content", cache = FALSE}
 (miteplot2 <- ggplot(data = mite_all, aes(y = SubsDens, x = WatrCont)) + 
    geom_point(colour = "bisque3")) 
 ```
 
 That all looks easy enough. But often you want to colour by a factor, and not use the horrendous grey background:
 
-```{r, fig.margin = TRUE, fig.cap = "Using a plainer background",cache = TRUE, tidy=FALSE}
+```{r, fig.margin = TRUE, fig.cap = "Using a plainer background",cache = FALSE, tidy=FALSE}
 miteplot3 <- ggplot(data = mite_all, 
                     aes(y = SubsDens, x = WatrCont, 
                         colour = Substrate)) +
@@ -151,7 +151,7 @@ ggplot(mite_all, aes(x = Brachy)) +
   geom_histogram()
 ```
 
-```{r, fig.margin = TRUE, fig.cap = "Notched boxplot",cache = TRUE, tidy=FALSE}
+```{r, fig.margin = TRUE, fig.cap = "Notched boxplot",cache = FALSE, tidy=FALSE}
 #sum of a number of species:
 ggplot(mite_all, aes(
   y = Eupelops + HPAV + 
@@ -173,7 +173,7 @@ ggplot(mite_env, aes(y = SubsDens, x = WatrCont)) +
              colour = "royalblue", size = 2)
 ```
 
-```{r, fig.margin = TRUE, fig.cap = "geom\\_abline()",tidy = FALSE, cache = TRUE}
+```{r, fig.margin = TRUE, fig.cap = "geom\\_abline()",tidy = FALSE, cache = FALSE}
 #or specify manually the slope of a line
 ggplot(mite_env, aes(y = log(SubsDens), x = log(WatrCont))) + 
   theme_bw() + 
@@ -201,7 +201,7 @@ miteplot1 + geom_point(aes(colour = SubsDens))
 `scale_colour_manual` allows us to specify the colours by name (or number).  
 `ggplot` uses the same colours as base graphics.  You can see them all at this website, [^r_colours] or give this a go: `demo("colors")` or for all the names, `colors()`.
 
-```{r, fig.margin = TRUE, fig.cap = "specifying shape \\& colour",tidy = FALSE, cache = TRUE}
+```{r, fig.margin = TRUE, fig.cap = "specifying shape \\& colour",tidy = FALSE, cache = FALSE}
 miteplot1 + 
   geom_point(aes(colour = Shrub, shape = Shrub), size = 3) +
   scale_colour_manual(values = c("forestgreen", 
@@ -215,7 +215,7 @@ miteplot1 +
 
 Here, we build on the `miteplot1` by calling it first, then adding some layers and theme adjustments.  
 
-```{r, fig.margin = TRUE, fig.cap = "Specifying colours; legend position", cache = TRUE, tidy = FALSE}
+```{r, fig.margin = TRUE, fig.cap = "Specifying colours; legend position", cache = FALSE, tidy = FALSE}
 miteplot1 +
   geom_point(aes(colour = Topo))+
   scale_colour_manual(values = c("royalblue", "orange")) +  
@@ -226,7 +226,7 @@ miteplot1 +
 
 We can add basic regression lines (the equivalent of `abline` in base graphics) using the `geom_smooth` option.  The default is a loess smooth which is useful to see local changes in the data, although an lm smooth is probably more common.  
 
-```{r, fig.margin = TRUE, fig.cap = "Adding a regression line", cache = TRUE, tidy = FALSE}
+```{r, fig.margin = TRUE, fig.cap = "Adding a regression line", cache = FALSE, tidy = FALSE}
 miteplot1 + 
   geom_point(aes(colour = Topo))+ 
   geom_smooth(method = "lm", aes(colour = Topo)) +  
@@ -241,7 +241,7 @@ miteplot1 +
 
 Sometimes we want to make multiple graphs based on one factor.  For example, substrate density, shrub, and topo.  For this we use the `facet_wrap` command.  
 
-```{r, fig.margin = TRUE, fig.cap = "Facet wrap, scale\\_shape",cache = TRUE, tidy=FALSE}
+```{r, fig.margin = TRUE, fig.cap = "Facet wrap, scale\\_shape",cache = FALSE, tidy=FALSE}
 ggplot(mite_all, aes(y = Brachy, x = SubsDens)) +
   geom_point(aes(shape = Topo)) +
   geom_smooth(aes(linetype = Topo), 
@@ -259,7 +259,7 @@ ggplot(mite_all, aes(y = Brachy, x = SubsDens)) +
 We can also facet using two variables, using `facet_grid`.
 
 
-```{r, fig.margin = TRUE, fig.cap = "Facet grid, scale\\_shape",cache = TRUE, tidy=FALSE}
+```{r, fig.margin = TRUE, fig.cap = "Facet grid, scale\\_shape",cache = FALSE, tidy=FALSE}
 ggplot(mite_all, aes(y = Brachy, x = SubsDens)) +
   geom_point(aes(shape = Topo)) +
   geom_smooth(aes(linetype = Topo), 
@@ -288,7 +288,7 @@ Note that we excluded all the other species.  We could have selected _all_ the s
 
 We might like a bar plot by species we use the new dataframe we've created:
 
-```{r, fig.margin = TRUE, fig.cap = "Flipped bar chart",cache = TRUE, tidy=FALSE}
+```{r, fig.margin = TRUE, fig.cap = "Flipped bar chart",cache = FALSE, tidy=FALSE}
 ggplot(mite_long, aes(y = count, x = Shrub)) +
   geom_bar(aes(fill = species), stat = "summary", fun.y = "sum")+
   facet_wrap(~species) + 
@@ -312,7 +312,7 @@ mite_summarised <- mite_long %>%
 ````
 We have returned a dataframe which has the mean (& sd & se) for each combination of `species`, `Shrub`, and `Topo` in our data.  We can now use this dataframe to plot:
 
-```{r,fig.margin = TRUE, fig.cap = "Bar chart with SE, 1",cache = TRUE, tidy=FALSE}
+```{r,fig.margin = TRUE, fig.cap = "Bar chart with SE, 1",cache = FALSE, tidy=FALSE}
 ggplot(mite_summarised, aes(x = Topo, y = mean_count))+
   geom_bar(stat = "identity", aes(fill = species)) +
   geom_errorbar(aes(ymin = mean_count - se, 
@@ -327,7 +327,7 @@ ggplot(mite_summarised, aes(x = Topo, y = mean_count))+
 
 This time, we specify `position_dodge()` for _both_ the error bars and the bars to make them separate by a reasonable amount. Here we specify it to be 0.9, you can try other numbers.
 
-```{r, fig.width = 10, fig.height = 3, fig.fullwidth = TRUE, fig.cap = "Bar chart with SE, 2", cache = TRUE, tidy=FALSE}
+```{r, fig.width = 10, fig.height = 3, fig.fullwidth = TRUE, fig.cap = "Bar chart with SE, 2", cache = FALSE, tidy=FALSE}
 ggplot(mite_summarised, aes(x = Topo, y = mean_count))+
   geom_bar(aes(fill = reorder(species, mean_count)), 
            stat = "identity",
@@ -346,7 +346,7 @@ ggplot(mite_summarised, aes(x = Topo, y = mean_count))+
 # Saving plots, polishing for publication
 Colour is nice for presentations.  But sometimes you might want something that works for greyscale and resembles baseplot.  Here we run a mock glm (`mite_glm`), create a prediction frame using `expand.grid()` and then predict. Have a look at the "Predicting from models" handout that accompanies the "Implementing models in R" seminar earlier in the series[^gitrepo]. 
 
-````{r, results = 'hide', cache = TRUE, tidy=FALSE}
+````{r, results = 'hide', cache = FALSE, tidy=FALSE}
 names(mite_all) # easy to forget or misspell variable names unless we check 
 
 mite_sp <- gather(data = mite_all,  key = "species", value = "count", Brachy:Trimalc2) %>%
@@ -370,7 +370,7 @@ mite_data2 <- within(mite_data2, {
 })
 ```
 That was all the prediction required.  Now we can make the plot:
-```{r, fig.width = 10, fig.height = 3, fig.fullwidth = TRUE, fig.cap = "Tidy chart", cache = TRUE, tidy=FALSE}
+```{r, fig.width = 10, fig.height = 3, fig.fullwidth = TRUE, fig.cap = "Tidy chart", cache = FALSE, tidy=FALSE}
 (tidy_plot <- ggplot(subset(mite_data2, mite_data2$species == "Brachy"), 
                      aes(x = WatrCont, y = Count)) +
    geom_smooth(stat = "identity", 
@@ -425,7 +425,7 @@ ggsave(plot = tidy_plot, file = "exciting_mites.pdf", width = 210, height = 148,
 You can use `arrangeGrob` from the gridExtra package in place of `grid.arrange` when you want to arrange ggplots and still use `ggsave`.  For an example of this see the "extended A" ggplot handout.
 
 # Conclusions
-ggplot produces highly customisable plots. The help pages are your friend, as is google.  There is a ggplot mailing list that is worth browsing through or even subscribing too.  And http://www.cookbook-r.com is gold both for manipulating data, and plotting it.  
+ggplot produces highly customisable plots. The help pages are your friend, as is google.  There is a ggplot mailing list that is worth browsing through or even subscribing to.  And http://www.cookbook-r.com is gold both for manipulating data, and plotting it.  
 
 # AND IF ALL ELSE FAILS...
 
@@ -442,7 +442,7 @@ mite_sp_short <- mite_sp %>%
 mite_sp_short <- mite_sp_short[!mite_sp_short$species == "LCIL",]
 ```
 
-```{r, tidy=FALSE, fig.width = 10, fig.height = 3, fig.fullwidth = TRUE, fig.cap = "please don't use", cache = TRUE,}
+```{r, tidy=FALSE, fig.width = 10, fig.height = 3, fig.fullwidth = TRUE, fig.cap = "please don't use", cache = FALSE,}
 ggplot(mite_sp[mite_sp$species %in% c(mite_sp_short$species), ], 
        aes(x = Shrub, fill = species, y = count)) +
   geom_boxplot() +

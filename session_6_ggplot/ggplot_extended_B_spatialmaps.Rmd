@@ -2,9 +2,14 @@
 title: 'ggplot: spatial'
 author: "Olivia Burge"
 date: "12 October 2014"
-output: html_document
+output: pdf_document
 ---
-# Mapping, animals and corr plots (2)
+
+This tutorial is an extension of the introduction to ggplot tutorials (https://github.com/orb16/seminaRs/tree/master/session_6_ggplot), and introduces basic mapping skills.  It's actually package-agnostic and if base graphics are your thing, you're catered for too.  
+
+First, we cover making a map (in this case of NZ) in base graphics and ggplot and save with/without a transparent background. Transparent backgrounds are very useful for posters which have a coloured background. Then we cover adding points and layers to our base maps.
+
+This is just the beginning of course.  You can make inset maps (http://r-nold.blogspot.co.nz/2014/06/creating-inset-map-with-ggplot2.html) and check out the `ggmap` package, particularly the stamen maps.
 
 ```{r, include=FALSE}
 if(!require(vegan)){
@@ -54,7 +59,7 @@ if(!require(ggthemes)){
 ````
 
 # Maps: base plot and ggplot
-```{r, message=FALSE, cache=FALSE,cache.comments=FALSE}
+```{r, message=FALSE}
 map('nz')
 # or:
 nzmap <- map_data('nz')
@@ -94,12 +99,12 @@ If this doesn't work, uncomment the lines below where the data is entered manual
 ```{r Getting some point data to add, tidy=TRUE}
 # get data
 
-url_kakariki <- getURL("https://raw.githubusercontent.com/orb16/seminaRs/master/Ashburton%20lakes.csv", ssl.verifypeer = FALSE)
+url_kakariki <- getURL("https://raw.githubusercontent.com/orb16/seminaRs/master/session_6_ggplot/raw_data/Ashburton%20lakes.csv", ssl.verifypeer = FALSE)
 
 awaraikakariki <- read.csv(text= url_kakariki, header = TRUE, stringsAsFactors = FALSE, fileEncoding="latin1") 
 awaraikakariki <- awaraikakariki[c("site", "lat", "lon")]
 
-url_ramsar <- getURL("https://raw.githubusercontent.com/orb16/seminaRs/master/Ramsar%20sites.csv", ssl.verifypeer = FALSE)
+url_ramsar <- getURL("https://raw.githubusercontent.com/orb16/seminaRs/master/session_6_ggplot/raw_data/Ramsar%20sites.csv", ssl.verifypeer = FALSE)
 
 ramsar<-read.table(text = url_ramsar, sep = ",",  stringsAsFactors = FALSE, fileEncoding="latin1", header = T)
 ramsar <- ramsar[c("site", "lat", "lon")]
@@ -116,9 +121,9 @@ ramsar <- ramsar[c("site", "lat", "lon")]
 
 ## base graphics method
 
-This is going to save your map as "foo.png" to whichever working directory you have (NB, it will likely be where you've saved this .Rmd file, unless you set it explicitly.)
+This is going to save your map as "foo.png" to whichever working directory you have (NB, it will likely be where you've saved this .Rmd file, unless you set it explicitly.) If you are knitting this file, you'll need to delete the `eval=FALSE` in the curly brackets to make it actually save.
 
-```{r Adding points to a map with base graphics}
+```{r Adding points to a map with base graphics, eval=FALSE}
 png("foo.png", height= 640, width= 480)
 map('nz')
 points(x = ramsar$lon, y = ramsar$lat, pch = 16, col="slateblue4")
@@ -182,13 +187,6 @@ From: https://koordinates.com/layer/301-nz-fsms6-south-island/
 tramping2<-readOGR("raw_data/kx-nz-fsms6-south-island-SHP", layer = "nz-fsms6-south-island")
 
 tramping3<-fortify(tramping2)
-str(tramping3)
-head(tramping3)
-class(tramping2)
-str(tramping2@data)
-attributes(tramping2)
-attributes(tramping2)
-tramping2@polygons[1]
 
 head(tramping2@data)
 
@@ -196,7 +194,7 @@ tramping2@data$id <- rownames(tramping2@data) ##from http://mazamascience.com/Wo
 forests <- fortify(tramping2, region = "id")
 names(forests)
 head(forests)
-names(tramping2@data)
+
 forests_df <- merge(forests, tramping2@data, by = "id")
 head(forests_df)
 levels(forests_df$DESC)

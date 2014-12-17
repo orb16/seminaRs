@@ -1,11 +1,11 @@
 ---
-title: 'ggplot2 seminar: the extras'
+title: 'ggplot2 seminar: phylopic, ggpairs & NMDS'
 author: "Olivia Burge"
 date: "11 October 2014"
-output: html_document
+output: pdf_document
 ---
 
-# Mapping, animals and corr plots (1)  
+This tutorial is an extension to the introductory ggplot handouts found at https://github.com/orb16/seminaRs/tree/master/session_6_ggplot.. If you are new to ggplot it would be worth running through them first. This tutorial covers using phylopic images in plots, using ggpairs and changing the default colourscheme, and extracting information from an NMDS object to recreate it in ggplot2. 
 
 ```{r, include=FALSE}
 if(!require(vegan)){
@@ -28,33 +28,17 @@ if(!require(gridExtra)){
     install.packages("gridExtra", repos = 'http://cran.stat.auckland.ac.nz/')
     library(gridExtra)
 }
-if(!require(rgdal)){
-    install.packages("rgdal", repos = 'http://cran.stat.auckland.ac.nz/')
-    library(rgdal)
-}
-if(!require(sp)){
-    install.packages("sp", repos = 'http://cran.stat.auckland.ac.nz/')
-    library(sp)
-}
-if(!require(rgeos)){
-    install.packages("rgeos", repos = 'http://cran.stat.auckland.ac.nz/')
-    library(rgeos)
-}
-if(!require(RCurl)){
-    install.packages("RCurl", repos = 'http://cran.stat.auckland.ac.nz/')
-    library(RCurl)
-}
-if(!require(maps)){
-    install.packages("maps", repos = 'http://cran.stat.auckland.ac.nz/')
-    library(maps)
-}
-if(!require(ggmap)){
-    install.packages("ggmap", repos = 'http://cran.stat.auckland.ac.nz/')
-    library(ggmap)
-}
 if(!require(ggthemes)){
     install.packages("ggthemes", repos = 'http://cran.stat.auckland.ac.nz/')
     library(ggthemes)
+}
+if(!require(tidyr)){
+    install.packages("tidyr", repos = 'http://cran.stat.auckland.ac.nz/')
+    library(tidyr)
+}
+if(!require(dplyr)){
+    install.packages("dplyr", repos = 'http://cran.stat.auckland.ac.nz/')
+    library(dplyr)
 }
 ````
 
@@ -62,19 +46,19 @@ if(!require(ggthemes)){
 But of course. Here we source from phylopic.com.  You should of course attribute (as per the website, see end of document for mine). Failing that, make you own (and submit to phylopic too :)): http://blogevolved.blogspot.co.nz/2011/02/making-silhouettes-for-phylopic.html
 
 
-```{r, include=FALSE}
-#Some code for text searching: I've found it easier just to go look at the website.
-
-
-# searchres <- search_text(text = "Stenella", options = "names")
-# head(searchres)
-# output <- search_images(uuid=searchres[[2]], options=c("pngFiles", "credit", "canonicalName"))
-# head(output)
-# myobjs <- get_image(output, size = "512")
-
-```
 Packages required:
 ```{r, message=FALSE, results='hide', warning=FALSE}
+# Either run the code chunk above (hidden in output) or install the packages below using
+# install.packages("") with package name inbetween the "".
+require(ggthemes)
+require(ggplot2)
+require(vegan)
+require(GGally)
+require(grid)
+require(gridExtra)
+require(dplyr)
+require(tidyr)
+
 #install_github("devtools")
 library(devtools)
 
@@ -85,8 +69,6 @@ library(rphylopic) #install Rphylopic package
 
 
 ```{r, results ='hide', warning=FALSE, message=FALSE}
-require(tidyr)
-require(dplyr)
 data(mite)
 data(mite.env)
 mite_all <- cbind(mite, mite.env)
@@ -166,7 +148,7 @@ require(gridExtra) # required for arrangeGrob.
 # then you wouldn't be able to use ggsave()
 brachylcil_plot <- arrangeGrob(brachy, lcil, ncol = 2)  
 brachylcil_plot
-ggsave(brachylcil_plot, file = "brachylcil_plot.pdf")
+#ggsave(brachylcil_plot, file = "brachylcil_plot.pdf")
 ```
 
 
@@ -177,7 +159,7 @@ This is quite useful for checking out your environmental variables before modell
 `ggpairs` _is_ highly customisable, but I've never enjoyed trying to get my head around it.  I'd rather use `ggplot` to build a number of plots of then either `grid.arrange` or `arrangeGrob` them (you'll need to check the interweb for how those work). 
 
 ```{r, cache=FALSE}
-#the data
+# the data
 data(mite.env)
 ```
 
@@ -212,9 +194,8 @@ This code is pretty highly annotated, and uses a dataset from `vegan`.
 require(vegan)
 require(ggplot2)
 require(grid) #this is only required for the envfit arrows. 
-#I've spent many a happy few minutes questioning 
-#what on earth the arrowhead error was coming up for. 
-#Solved by calling grid everytime!
+# I've spent many a happy few minutes questioning 
+# what on earth the arrowhead error was coming up for. 
  
 #data
 data(dune)
@@ -225,25 +206,24 @@ set.seed(201) # this allows us to reproduce the same result in the future
 meta.nmds.dune <- metaMDS(dune) #no transformation of species data 
 stressplot(meta.nmds.dune) 
  
-#envfit
+# envfit
 dune.envfit <- envfit(meta.nmds.dune, env = dune.env, perm = 999) 
 dune.envfit
  
-#data for plotting 
-##NMDS points
+# data for plotting 
+## NMDS points
 dune.NMDS.data<-dune.env #there are other ways of doing this. 
-#But this is the way I do it for ease of plotting
+# But this is the way I do it for ease of plotting
 
 dune.NMDS.data$NMDS1<-meta.nmds.dune$points[ , 1] #this puts the NMDS scores 
-#for the plots  into a new dataframe. 
-#you could put them into an existing one if you preferred.
+# for the plots  into a new dataframe. 
+# you could put them into an existing one if you preferred.
 dune.NMDS.data$NMDS2<-meta.nmds.dune$points[ , 2] 
  
-##species data
-
+## species data
 stems<-colSums(dune) #total abundances for each species
 spps <- data.frame(scores(meta.nmds.dune, display = "species")) 
-#dataframe of species scoes for plotting
+# dataframe of species scores for plotting
 
 spps$species <- row.names(spps) # making a column with species names
 spps$colsums <- stems #adding the colSums from above
@@ -255,7 +235,7 @@ spps.colmedian <- median(spps$colsums) #create an object that is the
 spps.colmean <- mean(spps$colsums) #creates a mean instead if you wish to use
 
 spps2 <- subset(spps,spps$colsums > spps.colmean) 
-#select the most abundant species. 
+# select the most abundant species. 
 # Could discard fewer e.g. spps$colsums>(spps.colmedian/2) instead
 
 spps2$species <- factor(spps2$species) 
@@ -270,7 +250,7 @@ env.scores.dune <- cbind(env.scores.dune,
                          env.variables = rownames(env.scores.dune)) 
 #and then gives them their names
  
-# function for ellipsess - just run this, is used later
+# function for ellipses - just run this, is used later
 # taken from the excellent stackoverflow Q+A: 
 ```
 
@@ -361,9 +341,9 @@ mult <- 2 #multiplier for the arrows and text for envfit below.
 # NB I usually use the "pdf" function in rstudio to export the plot. 
 #But you can also:
  
-ggsave(plot = dune.nmds.gg1, filename = "awesome_dune.pdf") #if you don't specify 
+# ggsave(plot = dune.nmds.gg1, filename = "awesome_dune.pdf") #if you don't specify 
 # the plot it will save the last one
-##many other options - see ?ggsave.  Can set dimensions, units, dpi
+## many other options - see ?ggsave.  Can set dimensions, units, dpi
 
 ````
 
