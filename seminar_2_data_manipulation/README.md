@@ -14,7 +14,7 @@
 
 The L000 reference in the title of each slide refers to the appropriate line in the script, so you can flick back and forward between the both.
 
-Materials originally presented by Maki at the Lincoln version of this seminar:
+__Materials originally presented__ by Maki Ikegami at the Lincoln version of this seminar:
 
-Makihiko IKEGAMI (Maki) is a plant ecologist working in the fields of agriculture, biogeography, and conservation biology focusing on evaluating distributions and performances of plant species under different environments through modelling and field works.
+__Makihiko IKEGAMI (Maki)__ is a plant ecologist working in the fields of agriculture, biogeography, and conservation biology focusing on evaluating distributions and performances of plant species under different environments through modelling and field works.
  
