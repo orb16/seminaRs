@@ -1,4 +1,4 @@
-# Intro to R & R studio
+# Intro to R & RStudio
 
 ##This seminar covers:
 
@@ -21,3 +21,4 @@ Materials originally presented by Samuel Brown and Jennifer Bufford at the Linco
 Jennifer Bufford is a postdoctoral fellow at the Bio-Protection Research Centre at Lincoln University (NZ).  She is working with Phil Hulme to examine fungal pathogen accumulation on introduced plants in New Zealand.  Invasion biology, plant ecology and seed and seedling biology are Jennifer’s key research interests and she uses R extensively for data processing and database management, creating figures for publication, and various statistical analyses, particularly generalized linear mixed effects modelling.
 
 Samuel Brown is a PhD student in the Bio-Protection Research Centre at Lincoln University (NZ). He is interested in the taxonomy, systematics and evolution of weevils, with a current focus on the New Zealand broad-nosed weevils. He uses R in a variety of capacities, but especially in the analysis of phylogenetic data. He is one of the authors and maintainers of the R package 'spider'.
+
