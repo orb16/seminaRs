@@ -11,7 +11,7 @@ This seminar covers primarily implementing models in R, rather than the statisti
 * Handout (pdf)
 * R script
 * Data to be saved in your working directory (distribution_trout.txt, ozone.data.txt and tannin.txt)
-* Supplementary worked example on predicting from your models (not covered in this seminar originally, but in a separate session.) This has both an .Rmd, or if you are not used to using .Rmds, just use the pdf - both called "model_preddiction".
+* Supplementary worked example on predicting from your models (not covered in this seminar originally, but in a separate session.) This has both an .Rmd, or if you are not used to using .Rmds, just use the pdf - both called "model_prediction".
 
 __Seminar presented originally__ by Hannah Franklin and Ursula Torres at both universities:
 
