@@ -11,3 +11,9 @@ The R script covers implementation of the following in R:
 * betadisper
 * RDA
 * dbRDA
+
+Materials originally presented by Jon Bray and Olivia Burge at the Canterbury seminar (no Lincoln version of this seminar):
+
+Jon Bray recently graduated with a PhD from the University of Canterbury. See: http://www.biol.canterbury.ac.nz/ferg/people.shtml for a brief profile.
+
+Olivia Burge is a PhD candidate at the University of Canterbury. Her research attacks (enthusiastically) the question of forest regeneration in NZ’s largest Ramsar wetland using a range of field experiments and models.  She uses R for big data adventures, data manipulation, spatial analysis (in combination with Netlogo), experimental analysis (primarily mixed models, boosted regression trees and associated) and multivariate analyses.
