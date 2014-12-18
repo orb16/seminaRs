@@ -1,4 +1,4 @@
-# Intro to R & R studio
+# Intro to R & RStudio
 
 ##This seminar covers:
 
