@@ -9,7 +9,7 @@ This seminar covers plotting using the base graphics system that is built into R
 ## Materials include:
 
 * Slides and accompanying introductory handout
-* Class exercises R script (& class answer)
+* Class exercises R script (& class answers)
 
 __Seminar originally run__ by Samuel Brown and Marona Rovira only at Lincoln:
 
