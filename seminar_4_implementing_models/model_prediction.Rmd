@@ -180,7 +180,7 @@ then it is simply a matter of doing the following, if plotting all the effects:
 ```{r}
 plot(allEffects(mod1))
 ```
-Note this plots a similar standard error to that obtained by `se.fit=TRUE, type = "response"`, in that the confidence interval goes below zero which is unrealistic for count data.  You need to use the `rescale = FALSE` option to avoid this.
+Note this plot is scaled.  You need to use the `rescale = FALSE` option to avoid this.
 
 ```{r}
 plot(allEffects(mod1), rescale=F)
