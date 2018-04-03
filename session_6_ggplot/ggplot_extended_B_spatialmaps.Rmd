@@ -113,8 +113,8 @@ ramsar <- ramsar[c("site", "lat", "lon")]
 
 # 
 # ramsar <- data.frame(
-#   site = c("Awarua Wetland (formerly Waituna Lagoon)", "Farewell Spit", "Whangamarino", "Kopuatai Peat Dome", "Firth of Thames", "Manawatu river mouth and estuary"), 
-#   lat = c(-46.56666667, -40.53333333, -37.3, -37.43333333, -37.21666667, -40.48333333), 
+#   site = c("Awarua Wetland (formerly Waituna Lagoon)", "Farewell Spit", "Whangamarino", "Kopuatai Peat Dome", "Firth of Thames", "Manawatu river mouth and estuary"),
+#   lat = c(-46.56666667, -40.53333333, -37.3, -37.43333333, -37.21666667, -40.48333333),
 #   lon = c(168.5166667, 172.8333333, 175.1166667, 175.55, 175.3833333, 175.2333333)
 #   )
 ````
@@ -158,9 +158,9 @@ map_bg <- ggplot(nzmap, aes(x = long, y = lat)) +
               aes(x = lon, y = lat, colour = data)) + 
    scale_colour_tableau(guide = FALSE) +
    facet_wrap(~ data) +
-   theme_minimal() + 
-   theme(strip.text = element_text(size = 12),
-         strip.background = element_rect(fill = "grey", colour = NA),
+   theme_map() + 
+   theme(strip.text = element_text(size = 12, colour = "white"),
+         strip.background = element_rect(fill = "black", colour = NA),
          panel.grid.major = element_blank(), 
          panel.grid.minor = element_blank(), 
          panel.background = element_rect(fill = "transparent", 
@@ -170,6 +170,11 @@ map_bg <- ggplot(nzmap, aes(x = long, y = lat)) +
 
 #ggsave(plot = map_bg, "map_bg.png", bg = "transparent")
 map_bg
+
+svg(file = "/Users/Liv/Documents/thesis/niwa_pres/niwa_thesis_pres/assets/img/wetlandsNZ2.svg", width = 8, height = 6)
+map_bg
+dev.off()
+
 #this is for a transparent map.  
 #Delete all the references to transparent to get a white bg.
 ```

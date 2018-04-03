@@ -384,8 +384,8 @@ That was all the prediction required.  Now we can make the plot:
          legend.direction= "horizontal", 
          legend.key = element_blank(), 
          legend.background = element_rect(colour = "grey")) +
-   labs(y = "Water content", 
-        x = expression(paste(italic("B. armetelius "),"abundance")), 
+   labs(x = "Water content", 
+        y = expression(paste(italic("B. armetelius "),"abundance")), 
         linetype = "Topography") +
    coord_cartesian(x = c(130, 600)))
 ```
@@ -406,7 +406,8 @@ I often do this for quick export.  Under the plots pane, click export, then save
 Not recommended. The problem with this and the above option is working out which plot goes with which set of code can be problematic (believe me). If you are determined, at least put a `#filename.png` note next to the plot code.
 
 ## pdf() or png()
-Useful because it's universal. Sometimes the R gremlins don't play nicely in operating systems, in which case you might use ggsave() - below.
+Useful because it's universal - it works for base plots as well as ggpltos.. 
+
 ```{r, eval = FALSE}
 pdf("exciting_mites.pdf", width=8.3, height=5.3) # this sets up the filename, and size (in inches)
 tidy_plot #this tells R the plot we want to save
@@ -417,7 +418,7 @@ dev.off() # this tells R to stop capturing the graphical output (plots)
 The same format applies for .png, except you use png. See ?png for details. Or ?jpeg if you are that way inclined.
 
 ## ggsave()
-This only works for ggplots, but it sometimes it seems to work better.  You specify which plot you want to save, the size, and the file name all in one.  You can use a bunch of different formats, some of which allow you to specify a different resolution.  
+This only works for ggplots.  You specify which plot you want to save, the size, and the file name all in one.  You can use a bunch of different formats, some of which allow you to specify a different resolution.  
 
 ```{r,results='hide', fig.keep='none'}
 ggsave(plot = tidy_plot, file = "exciting_mites.pdf", width = 210, height = 148, units = "mm", dpi = 600)
